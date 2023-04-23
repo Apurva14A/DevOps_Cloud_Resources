@@ -1,8 +1,9 @@
 resource "aws_instance" "ec2_module" {
+  for_each               = toset(data.aws_subnets.private.ids)
   ami                    = var.ami_id
   instance_type          = var.instance_type
-  subnet_id              = data.aws_subnets.blog_subnet.id
-  vpc_security_group_ids = [data.aws_security_groups.blog_sg.id]
+  subnet_id              = each.value
+  vpc_security_group_ids = var.security_group
   key_name               = var.key_name
   #iam_instance_profile   = " "
 
@@ -13,23 +14,25 @@ resource "aws_instance" "ec2_module" {
 }
 
 
-data "aws_subnets" "blog_subnet" {
-
+data "aws_subnets" "private" {
   filter {
-    name   = "availability-zone"
-    values = [var.az]
+    name   = "vpc-id"
+    values = [var.vpc_id]
   }
-}
 
-data "aws_subnet" "subnet" {
-  for_each = toset(data.aws_subnets.blog_subnet.ids)
-  id       = each.value
-}
-
-
-data "aws_security_groups" "blog_sg" {
   tags = {
-    Application = "blog-website"
-    Environment = "test"
+    tier = "private"
   }
 }
+# data "aws_security_groups" "blog_sg" {
+#   filter {
+#     name   = "vpc-id"
+#     values = [var.vpc_id]
+#   }
+
+#   tags = {
+#     Application = "blog-website"
+#     Environment = "test"
+#   }
+
+# }

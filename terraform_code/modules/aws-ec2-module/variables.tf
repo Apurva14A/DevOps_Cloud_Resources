@@ -12,14 +12,16 @@ variable "key_name" {
   type = string
 }
 
-# variable "vpc_id" {
-#   type        = string
-#   description = "VPC id for ec2 instance"
-# }
-
-variable "az" {
+variable "vpc_id" {
   type        = string
-  description = "Availability zone for subnet id"
+  description = "VPC id for ec2 instance"
+}
+
+variable "security_group" {
+  type        = list(string)
+  description = "Security group for ec2 instance creation"
+
+
 }
 
 variable "app_name" {
