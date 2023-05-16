@@ -14,8 +14,10 @@ pipeline {
               	 	   echo "build has started" 
                   	   sh "mvn clean install"
               	  	  echo "Build is successfully done"  
-              	  	  }  
-				  }
-         	    }
+
+					}				  
+				  
+		
+			    }
         }
 }
