@@ -7,12 +7,8 @@ resource "aws_instance" "ec2_module" {
   key_name               = var.key_name
   #iam_instance_profile   = " "
 
-  tags = {
-    Application = var.app_name
-    Environment = var.env_name
-  }
+  tags = module.common_tags
 }
-
 
 data "aws_subnets" "private" {
   filter {
